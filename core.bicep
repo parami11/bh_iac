@@ -3,9 +3,12 @@ targetScope='subscription'
 // To Do: Read from pipeline variables
 param environmentType string='dev1'
 param applicationName string='bhdemo'
+param containerRegistrySKU string ='Basic'
 
 var resourceGroupName='rg-${applicationName}-${environmentType}'
 var cosmosAccountName='cosmos-${applicationName}-${environmentType}'
+var containerRegistryName= 'acr${applicationName}${environmentType}'
+
 
 // Create Resource Group
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01'= {
@@ -19,5 +22,15 @@ module cosmodb 'cosmosdb.bicep'={
   scope:resourceGroup
   params:{
     cosmosAccountNme:cosmosAccountName
+  }
+}
+
+// Create contsiner registry
+module containerRegistry 'containerregistry.bicep'={
+  name:'containerRegistry'
+  scope:resourceGroup
+  params:{
+    acrName:containerRegistryName
+    acrSku:containerRegistrySKU
   }
 }
