@@ -3,11 +3,11 @@ targetScope='subscription'
 // To Do: Read from pipeline variables
 param environmentType string='dev1'
 param applicationName string='bhdemo'
-param containerRegistrySKU string ='Basic'
 
 var resourceGroupName='rg-${applicationName}-${environmentType}'
 var cosmosAccountName='cosmos-${applicationName}-${environmentType}'
 var containerRegistryName= 'acr${applicationName}${environmentType}'
+var containerRegistrySKU= 'Basic'
 
 
 // Create Resource Group
