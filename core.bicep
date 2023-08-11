@@ -9,7 +9,10 @@ var cosmosAccountName = 'cosmos-${applicationName}-${environmentType}'
 var containerRegistryName = 'acr${applicationName}${environmentType}'
 var containerRegistrySKU = 'Basic'
 var appServicePlanName = 'appplan-${applicationName}-${environmentType}'
-var appServicePlanSKU = 'Y1'
+var appServicePlanSKU = 'P1V2'
+var frontEndAppNme = 'app-fe-${applicationName}-${environmentType}'
+var backEndAppNme = 'app-be-${applicationName}-${environmentType}'
+var acrPullDefinitionId = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
 
 // Create Resource Group
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
@@ -26,16 +29,6 @@ module cosmodb 'cosmosdb.bicep' = {
   }
 }
 
-// Create contsiner registry
-module containerRegistry 'containerregistry.bicep' = {
-  name: 'containerRegistry'
-  scope: resourceGroup
-  params: {
-    acrName: containerRegistryName
-    acrSku: containerRegistrySKU
-  }
-}
-
 //create app service
 module appService 'appservice.bicep' = {
   name: 'appService'
@@ -43,5 +36,19 @@ module appService 'appservice.bicep' = {
   params: {
     appServicePlanName: appServicePlanName
     appServicePlanSKU: appServicePlanSKU
+    acrName: containerRegistryName
+    frontEndAppName: frontEndAppNme
+    backEndAppName: backEndAppNme
+  }
+}
+
+// Create contsiner registry
+module containerRegistry 'containerregistry.bicep' = {
+  name: 'containerRegistry'
+  scope: resourceGroup
+  params: {
+    acrName: containerRegistryName
+    acrSku: containerRegistrySKU
+    frontendAppId: appService.outputs.frontEndAppID
   }
 }
