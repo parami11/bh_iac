@@ -1,3 +1,4 @@
+param location string
 param appServicePlanName string
 param backEndAppName string
 param frontEndAppName string
@@ -6,7 +7,7 @@ param acrName string
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
   name: appServicePlanName
-  location: resourceGroup().location
+  location: location
   properties: {
     reserved: true
   }
@@ -18,7 +19,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
 
 resource frontEndAppService 'Microsoft.Web/sites@2020-06-01' = {
   name: frontEndAppName
-  location: resourceGroup().location
+  location: location
   identity: {
     type: 'SystemAssigned'
   }
@@ -30,4 +31,19 @@ resource frontEndAppService 'Microsoft.Web/sites@2020-06-01' = {
   }
 }
 
+resource backEndAppService 'Microsoft.Web/sites@2020-06-01' = {
+  name: backEndAppName
+  location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    serverFarmId: appServicePlan.id
+    siteConfig: {
+      linuxFxVersion: 'DOCKER|${acrName}.azurecr.io/dotnet-be:latest'
+    }
+  }
+}
+
 output frontEndAppID string = frontEndAppService.identity.principalId
+output backEndAppID string = backEndAppService.identity.principalId
