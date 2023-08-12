@@ -70,7 +70,5 @@ module containerRegistry 'containerregistry.bicep' = {
     location: resourceGroup.location
     acrName: containerRegistryName
     acrSku: containerRegistrySKU
-    frontendAppId: appService.outputs.frontEndAppID
-    backendAppId: appService.outputs.backEndAppID
   }
 }
