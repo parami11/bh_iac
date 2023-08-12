@@ -4,6 +4,10 @@ param backEndAppName string
 param frontEndAppName string
 param appServicePlanSKU string
 param acrName string
+param cosmosDb_AccountName string
+param cosmosDb_primaryKey string
+param cosmosDb_databaseName string
+param cosmosDb_containerName string
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
   name: appServicePlanName
@@ -41,6 +45,24 @@ resource backEndAppService 'Microsoft.Web/sites@2020-06-01' = {
     serverFarmId: appServicePlan.id
     siteConfig: {
       linuxFxVersion: 'DOCKER|${acrName}.azurecr.io/dotnet-be:latest'
+      appSettings: [
+        {
+          name: 'AzureCosmosDbSettings__URL'
+          value: 'https://${cosmosDb_AccountName}.documents.azure.com:443/'
+        }
+        {
+          name: 'AzureCosmosDbSettings__PrimaryKey'
+          value: cosmosDb_primaryKey
+        }
+        {
+          name: 'AzureCosmosDbSettings__DatabaseName'
+          value: cosmosDb_databaseName
+        }
+        {
+          name: 'AzureCosmosDbSettings__ContainerName'
+          value: cosmosDb_containerName
+        }
+      ]
     }
   }
 }

@@ -1,8 +1,7 @@
 param location string
 param cosmosAccountNme string
-
-var dbName = 'bhdemodb'
-var collectionName_Employee = 'employees'
+param cosmosDbName string
+param cosmosCollectionName_Employee string
 
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
   name: cosmosAccountNme
@@ -26,20 +25,20 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
 
 resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-04-15' = {
   parent: cosmosDbAccount
-  name: dbName
+  name: cosmosDbName
   properties: {
     resource: {
-      id: dbName
+      id: cosmosDbName
     }
   }
 }
 
 resource employeesContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
   parent: cosmosDb
-  name: collectionName_Employee
+  name: cosmosCollectionName_Employee
   properties: {
     resource: {
-      id: collectionName_Employee
+      id: cosmosCollectionName_Employee
       partitionKey: {
         paths: [
           '/id'
@@ -48,3 +47,5 @@ resource employeesContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/
     }
   }
 }
+
+output cosmosDb_primaryKey string = cosmosDbAccount.listKeys().primaryMasterKey
