@@ -14,11 +14,22 @@ var backEndAppNme = 'app-be-${applicationName}-${environmentType}'
 var cosmosAccountName = 'cosmos-${applicationName}-${environmentType}'
 var cosmosDbName = 'bhdemodb'
 var cosmosCollectionName_Employee = 'employees'
+var logAnalyticsNamespaceName = 'loga-${applicationName}${environmentType}'
+var appInsightsName = 'appi-${applicationName}${environmentType}'
 
 // Create Resource Group
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: resourceGroupName
   location: deployment().location
+}
+
+// Create Log Analytics Workspace
+module logAnalytics 'logAnalytics.bicep' = {
+  name: 'logAnalytics'
+  scope: resourceGroup
+  params: {
+    logAnalyticsNamespaceName: logAnalyticsNamespaceName
+  }
 }
 
 // Create Cosmos DB
