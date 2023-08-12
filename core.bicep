@@ -59,6 +59,8 @@ module appService 'appservice.bicep' = {
     cosmosDb_primaryKey: cosmodb.outputs.cosmosDb_primaryKey
     cosmosDb_containerName: cosmosCollectionName_Employee
     cosmosDb_AccountName: cosmosAccountName
+    appInsightsName: appInsightsName
+    logAnalyticsWorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
   }
 }
 
