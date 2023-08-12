@@ -42,7 +42,7 @@ resource frontEndAppService 'Microsoft.Web/sites@2022-09-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
-      linuxFxVersion: 'DOCKER|${acrName}.azurecr.io/react-fe:latest'
+      linuxFxVersion: 'DOCKER|${acrName}.azurecr.io/react_fe:latest'
       appSettings: [
         {
           name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
@@ -70,7 +70,7 @@ resource backEndAppService 'Microsoft.Web/sites@2022-09-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
-      linuxFxVersion: 'DOCKER|${acrName}.azurecr.io/dotnet-be:latest'
+      linuxFxVersion: 'DOCKER|${acrName}.azurecr.io/dotnet_be:latest'
       appSettings: [
         {
           name: 'Cosmos_Url'
