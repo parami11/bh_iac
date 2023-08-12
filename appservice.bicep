@@ -73,19 +73,19 @@ resource backEndAppService 'Microsoft.Web/sites@2022-09-01' = {
       linuxFxVersion: 'DOCKER|${acrName}.azurecr.io/dotnet-be:latest'
       appSettings: [
         {
-          name: 'AzureCosmosDbSettings__URL'
+          name: 'Cosmos_Url'
           value: 'https://${cosmosDb_AccountName}.documents.azure.com:443/'
         }
         {
-          name: 'AzureCosmosDbSettings__PrimaryKey'
+          name: 'Cosmos_PrimaryKey'
           value: cosmosDb_primaryKey
         }
         {
-          name: 'AzureCosmosDbSettings__DatabaseName'
+          name: 'Cosmos_DatabaseName'
           value: cosmosDb_databaseName
         }
         {
-          name: 'AzureCosmosDbSettings__ContainerName'
+          name: 'Cosmos_ContainerName'
           value: cosmosDb_containerName
         }
         {
